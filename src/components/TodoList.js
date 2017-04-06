@@ -9,6 +9,8 @@ class TodoList extends Component {
     this.state.text = '';
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDeleteItem = this.handleDeleteItem.bind(this);
+    this.handleDeleteList = this.handleDeleteList.bind(this);
   }
 
 // // DATA
@@ -38,12 +40,22 @@ class TodoList extends Component {
     this.setState({ text: '' });
   }
 
+  handleDeleteItem(deleteTodoId) {
+    this.props.deleteTodo(deleteTodoId, this.state.listID);
+  }
+
+  handleDeleteList() {
+    this.props.deleteTodoList(this.state.listID);
+  }
+
   render() {
-    const { listContent } = this.state;
-    const renderTodo = () => listContent.map(todo => <TodoItem key={todo.id} todo={todo} />);
+    const { listContent } = this.props.list;
+    const renderTodo = () => listContent.map(todo =>
+      <TodoItem key={todo.id} todo={todo} deleteItem={this.handleDeleteItem} />);
 
     return (
       <div>
+        <h1>{this.state.listName}</h1>
         <div>
           {renderTodo()}
         </div>
@@ -55,8 +67,11 @@ class TodoList extends Component {
             onChange={this.onChange}
           />
         </form>
+        <form onSubmit={this.handleDeleteList}>
+          <button>delete list</button>
+        </form>
       </div>
-    );  /*  in progress */
+    );
   }
 }
 

@@ -39,11 +39,13 @@ class TodoApp extends Component {
         },
       ],
     };
-    this.AddTodoItemInList = this.AddTodoItemInList.bind(this);
-    this.AddTodoListInApp = this.AddTodoListInApp.bind(this);
+    this.addTodoItemInList = this.addTodoItemInList.bind(this);
+    this.addTodoListInApp = this.addTodoListInApp.bind(this);
+    this.deleteTodoItemInList = this.deleteTodoItemInList.bind(this);
+    this.deleteTodoListInApp = this.deleteTodoListInApp.bind(this);
   }
 
-  AddTodoItemInList(text, id) {
+  addTodoItemInList(text, id) {
     const newTodoLists = this.state.todoLists;
     newTodoLists.forEach((list) => {
       if (list.listID === id) {
@@ -53,7 +55,7 @@ class TodoApp extends Component {
     this.setState({ todoLists: newTodoLists });
   }
 
-  AddTodoListInApp(text) {
+  addTodoListInApp(text) {
     const newTodoList = {
       listID: uuid(),
       listName: text,
@@ -64,19 +66,44 @@ class TodoApp extends Component {
     this.setState({ todoLists: newTodoLists });
   }
 
+  deleteTodoItemInList(deleteTodoId, deleteListId) {
+    const newTodoLists = [];
+    for (let i = 0; i < this.state.todoLists.length; i += 1) {
+      if (this.state.todoLists[i].listID === deleteListId) {
+        newTodoLists.push({
+          listID: this.state.todoLists[i].listID,
+          listName: this.state.todoLists[i].listName,
+          listContent: this.state.todoLists[i].listContent.filter(todo => todo.id !== deleteTodoId),
+        });
+      } else {
+        newTodoLists.push(this.state.todoLists[i]);
+      }
+    }
+    this.setState({ todoLists: newTodoLists });
+  }
+
+  deleteTodoListInApp(deleteListId) {
+    const deleteList = list => list.listID !== deleteListId;
+    let newTodoLists = this.state.todoLists;
+    newTodoLists = newTodoLists.filter(deleteList);
+    this.setState({ todoLists: newTodoLists });
+  }
+
   render() {
     const { todoLists } = this.state;
     const renderTodoLists = () => todoLists.map(list =>
       <TodoList
         key={list.listID}
         list={list}
-        newTodo={this.AddTodoItemInList}
+        newTodo={this.addTodoItemInList}
+        deleteTodo={this.deleteTodoItemInList}
+        deleteTodoList={this.deleteTodoListInApp}
       />);
 
     return (
       <div>
         {renderTodoLists()}
-        <AddTodoList newTodoList={this.AddTodoListInApp} />
+        <AddTodoList newTodoList={this.addTodoListInApp} />
       </div>
     );
   }
