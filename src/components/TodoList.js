@@ -5,12 +5,14 @@ import TodoItem from './TodoItem';
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    this.state = props.list; // have to check syntax bug here
-    this.state.text = '';
-    this.onChange = this.onChange.bind(this);
+    this.state = { text: '', listname: '' };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDeleteItem = this.handleDeleteItem.bind(this);
     this.handleDeleteList = this.handleDeleteList.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.handleItemChange = this.handleItemChange.bind(this);
+    this.onChangelistName = this.onChangelistName.bind(this);
+    this.handlelistNameChange = this.handlelistNameChange.bind(this);
   }
 
 // // DATA
@@ -34,28 +36,55 @@ class TodoList extends Component {
     this.setState({ text: e.target.value });
   }
 
+  onChangelistName(e) {
+    this.setState({ listname: e.target.value });
+  }
+
+  handleItemChange(content, todoId) {
+    this.props.todoItemChange(content, todoId, this.props.list.listID);
+  }
+
+  handlelistNameChange(e) {
+    e.preventDefault();
+    this.props.todolistNameChange(this.state.listname, this.props.list.listID);
+    this.setState({ listName: '' });
+  }
+
   handleSubmit(e) {
     e.preventDefault();
-    this.props.newTodo(this.state.text, this.state.listID);
+    this.props.newTodo(this.state.text, this.props.list.listID);
     this.setState({ text: '' });
   }
 
   handleDeleteItem(deleteTodoId) {
-    this.props.deleteTodo(deleteTodoId, this.state.listID);
+    this.props.deleteTodo(deleteTodoId, this.props.list.listID);
   }
 
   handleDeleteList() {
-    this.props.deleteTodoList(this.state.listID);
+    this.props.deleteTodoList(this.props.list.listID);
   }
 
   render() {
     const { listContent } = this.props.list;
     const renderTodo = () => listContent.map(todo =>
-      <TodoItem key={todo.id} todo={todo} deleteItem={this.handleDeleteItem} />);
+      <TodoItem
+        key={todo.id}
+        todo={todo}
+        deleteItem={this.handleDeleteItem}
+        change={this.handleItemChange}
+      />);
 
     return (
       <div>
-        <h1>{this.state.listName}</h1>
+        <h1>{this.props.list.listName}</h1>
+        <form onSubmit={this.handlelistNameChange}>
+          <input
+            type="text"
+            onChange={this.onChangelistName}
+            value={this.state.listName}
+            placeholder="change your list name"
+          />
+        </form>
         <div>
           {renderTodo()}
         </div>

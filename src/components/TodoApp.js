@@ -4,6 +4,11 @@ import AddTodoList from './AddTodoList';
 
 const uuid = require('node-uuid');
 
+const cloneData = (data) => {
+  const jsonString = JSON.stringify(data);
+  return JSON.parse(jsonString);
+};
+
 class TodoApp extends Component {
   constructor(props) {
     super(props);
@@ -43,6 +48,8 @@ class TodoApp extends Component {
     this.addTodoListInApp = this.addTodoListInApp.bind(this);
     this.deleteTodoItemInList = this.deleteTodoItemInList.bind(this);
     this.deleteTodoListInApp = this.deleteTodoListInApp.bind(this);
+    this.changeTodoItem = this.changeTodoItem.bind(this);
+    this.changeTodolistName = this.changeTodolistName.bind(this);
   }
 
   addTodoItemInList(text, id) {
@@ -89,6 +96,48 @@ class TodoApp extends Component {
     this.setState({ todoLists: newTodoLists });
   }
 
+  changeTodoItem(content, todoId, todoListId) {
+    const todoLists = cloneData(this.state.todoLists);
+    let countList = 0;
+    let countItem = 0;
+
+    for (let i = 0; i < todoLists.length; i += 1) {
+      if (todoLists[i].listID === todoListId) {
+        countList = i;
+      }
+    }
+
+    for (let j = 0; j < todoLists[countList].listContent.length; j += 1) {
+      if (todoLists[countList].listContent[j].id === todoId) {
+        countItem = j;
+      }
+    }
+
+    for (let i = 0; i < todoLists.length; i += 1) {
+      if (todoLists[i].listID === todoListId) {
+        for (let j = 0; j < todoLists[i].listContent.length; j += 1) {
+          if (todoLists[i].listContent[countItem].id === todoId) {
+            todoLists[i].listContent[countItem].text = content;
+          }
+        }
+      }
+    }
+    this.setState({ todoLists });
+  }
+
+  changeTodolistName(listname, todoListId) {
+    const todoLists = cloneData(this.state.todoLists);
+    let countList = 0;
+
+    for (let i = 0; i < todoLists.length; i += 1) {
+      if (todoLists[i].listID === todoListId) {
+        countList = i;
+      }
+    }
+    todoLists[countList].listName = listname;
+    this.setState({ todoLists });
+  }
+
   render() {
     const { todoLists } = this.state;
     const renderTodoLists = () => todoLists.map(list =>
@@ -98,6 +147,8 @@ class TodoApp extends Component {
         newTodo={this.addTodoItemInList}
         deleteTodo={this.deleteTodoItemInList}
         deleteTodoList={this.deleteTodoListInApp}
+        todoItemChange={this.changeTodoItem}
+        todolistNameChange={this.changeTodolistName}
       />);
 
     return (

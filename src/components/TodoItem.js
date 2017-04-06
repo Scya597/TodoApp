@@ -3,24 +3,35 @@ import React, { Component } from 'react';
 class TodoItem extends Component {
   constructor(props) {
     super(props);
-    this.state = props.todo;
+    this.state = { text: props.todo.text };
     this.handleDelete = this.handleDelete.bind(this);
-    this.state.submitText = this.state.text;
+    this.onChange = this.onChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  onChange(e) {
+    this.setState({ text: e.target.value });
+  }
+
+  handleChange() {
+    this.props.change(this.state.text, this.props.todo.id);
   }
 
   handleDelete() {
-    this.props.deleteItem(this.state.id);
+    this.props.deleteItem(this.props.todo.id);
   }
 
   render() {
     const { text } = this.state;
     return (
       <div>
-        <input
-          type="text"
-          value={text}
-          onChange="HI"
-        />
+        <form onSubmit={this.handleChange}>
+          <input
+            type="text"
+            value={text}
+            onChange={this.onChange}
+          />
+        </form>
         <form onSubmit={this.handleDelete}>
           <button>delete item</button>
         </form>
@@ -30,31 +41,3 @@ class TodoItem extends Component {
 }
 
 export default TodoItem;
-
-// const TodoItem = (props) => {
-//   //
-//   // this.state = {
-//   //   id: 1,
-//   //   text: 'One-1'
-//   // }
-//
-//   const handleDelete = () => {
-//     props.deleteItem(props.todo.id);
-//   };
-//
-//   const { text } = props.todo;
-//   return (
-//     <div>
-//       <input
-//         type="text"
-//         value={text}
-//         onChange="HI"
-//       />
-//       <form onSubmit={handleDelete}>
-//         <button>delete item</button>
-//       </form>
-//     </div>
-//   );
-// };
-//
-// export default TodoItem;
