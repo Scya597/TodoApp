@@ -1,26 +1,18 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class TodoItem extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+const TodoItem = (props) => {
   //
   // this.state = {
   //   id: 1,
   //   text: 'One-1'
   // }
 
-
-  render() {
-    var {text} = this.props.todo;
-    return (
-      <div>
-        {text}
-      </div>
-    );
-  }
-}
-
+  const { text } = props.todo;
+  return (
+    <div>
+      {text}
+    </div>
+  );
+};
 
 export default TodoItem;
