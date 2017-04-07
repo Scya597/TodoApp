@@ -21,7 +21,7 @@ class TodoApp extends Component {
             {
               id: 1,
               text: 'One-1',
-              completed: false,
+              completed: true,
             },
             {
               id: 2,
@@ -55,6 +55,24 @@ class TodoApp extends Component {
     this.changeTodoItem = this.changeTodoItem.bind(this);
     this.changeTodolistName = this.changeTodolistName.bind(this);
     this.toggleTodoItemCheckbox = this.toggleTodoItemCheckbox.bind(this);
+    this.findListandItemPosition = this.findListandItemPosition.bind(this);
+    this.countComplete = this.countComplete.bind(this);
+  }
+
+  countComplete() {
+    const todoLists = cloneData(this.state.todoLists);
+    let countTrue = 0;
+    let countFalse = 0;
+    for (let i = 0; i < todoLists.length; i += 1) {
+      for (let j = 0; j < todoLists[i].listContent.length; j += 1) {
+        if (todoLists[i].listContent[j].completed) {
+          countTrue += 1;
+        } else {
+          countFalse += 1;
+        }
+      }
+    }
+    return [countTrue, countFalse];
   }
 
   findListandItemPosition(todoId, todoListId) {
@@ -75,7 +93,7 @@ class TodoApp extends Component {
   }
 
   addTodoItemInList(text, id) {
-    const newTodoLists = this.state.todoLists;
+    const newTodoLists = cloneData(this.state.todoLists);
     newTodoLists.forEach((list) => {
       if (list.listID === id) {
         list.listContent.push({ id: uuid(), text, completed: false });
@@ -113,7 +131,7 @@ class TodoApp extends Component {
 
   deleteTodoListInApp(deleteListId) {
     const deleteList = list => list.listID !== deleteListId;
-    let newTodoLists = this.state.todoLists;
+    let newTodoLists = cloneData(this.state.todoLists);
     newTodoLists = newTodoLists.filter(deleteList);
     this.setState({ todoLists: newTodoLists });
   }
@@ -140,12 +158,13 @@ class TodoApp extends Component {
   toggleTodoItemCheckbox(todoId, todoListId) {
     const todoLists = cloneData(this.state.todoLists);
     const [countList, countItem] = this.findListandItemPosition(todoId, todoListId);
-    todoLists[countList].listContent[countItem].completed = !todoLists[countList].listContent[countItem].completed;
+    todoLists[countList].listContent[countItem].completed ^= true;
     this.setState({ todoLists });
   }
 
   render() {
     const { todoLists } = this.state;
+    let [isCompleted, notCompleted] = this.countComplete();
     const renderTodoLists = () => todoLists.map(list =>
       <TodoList
         key={list.listID}
@@ -160,6 +179,7 @@ class TodoApp extends Component {
 
     return (
       <div>
+        <h1>Completed:{isCompleted} NotCompleted:{notCompleted}</h1>
         {renderTodoLists()}
         <AddTodoList newTodoList={this.addTodoListInApp} />
       </div>

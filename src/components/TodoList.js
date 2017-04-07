@@ -16,23 +16,6 @@ class TodoList extends Component {
     this.toggleCheckbox = this.toggleCheckbox.bind(this);
   }
 
-// // DATA
-//   this.state = {
-//     listID: 1,
-//     listName: 'Initial',
-//     listContent: [
-//       {
-//         id: 1,
-//         text: 'One-1'
-//       },
-//       {
-//         id:2,
-//         text: 'Two-1'
-//       }
-//     ]
-//   }
-// //////
-
   onChange(e) {
     this.setState({ newTodotext: e.target.value });
   }
