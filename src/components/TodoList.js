@@ -13,6 +13,7 @@ class TodoList extends Component {
     this.handleItemChange = this.handleItemChange.bind(this);
     this.onChangelistName = this.onChangelistName.bind(this);
     this.handlelistNameChange = this.handlelistNameChange.bind(this);
+    this.toggleCheckbox = this.toggleCheckbox.bind(this);
   }
 
 // // DATA
@@ -64,6 +65,10 @@ class TodoList extends Component {
     this.props.deleteTodoList(this.props.list.listID);
   }
 
+  toggleCheckbox(todoId) {
+    this.props.toggleTodoItemCheckbox(todoId, this.props.list.listID);
+  }
+
   render() {
     const { listContent } = this.props.list;
     const renderTodo = () => listContent.map(todo =>
@@ -72,6 +77,7 @@ class TodoList extends Component {
         todo={todo}
         deleteItem={this.handleDeleteItem}
         change={this.handleItemChange}
+        toggleCheckbox={this.toggleCheckbox}
       />);
 
     return (

@@ -21,10 +21,12 @@ class TodoApp extends Component {
             {
               id: 1,
               text: 'One-1',
+              completed: false,
             },
             {
               id: 2,
               text: 'Two-1',
+              completed: false,
             },
           ],
         },
@@ -35,10 +37,12 @@ class TodoApp extends Component {
             {
               id: 1,
               text: 'One-2',
+              completed: false,
             },
             {
               id: 2,
               text: 'Two-2',
+              completed: false,
             },
           ],
         },
@@ -50,13 +54,31 @@ class TodoApp extends Component {
     this.deleteTodoListInApp = this.deleteTodoListInApp.bind(this);
     this.changeTodoItem = this.changeTodoItem.bind(this);
     this.changeTodolistName = this.changeTodolistName.bind(this);
+    this.toggleTodoItemCheckbox = this.toggleTodoItemCheckbox.bind(this);
+  }
+
+  findListandItemPosition(todoId, todoListId) {
+    const todoLists = cloneData(this.state.todoLists);
+    let countList;
+    let countItem;
+    for (let i = 0; i < todoLists.length; i += 1) {
+      if (todoLists[i].listID === todoListId) {
+        countList = i;
+      }
+    }
+    for (let j = 0; j < todoLists[countList].listContent.length; j += 1) {
+      if (todoLists[countList].listContent[j].id === todoId) {
+        countItem = j;
+      }
+    }
+    return [countList, countItem];
   }
 
   addTodoItemInList(text, id) {
     const newTodoLists = this.state.todoLists;
     newTodoLists.forEach((list) => {
       if (list.listID === id) {
-        list.listContent.push({ id: uuid(), text });
+        list.listContent.push({ id: uuid(), text, completed: false });
       }
     });
     this.setState({ todoLists: newTodoLists });
@@ -98,42 +120,27 @@ class TodoApp extends Component {
 
   changeTodoItem(content, todoId, todoListId) {
     const todoLists = cloneData(this.state.todoLists);
-    let countList = 0;
-    let countItem = 0;
-
-    for (let i = 0; i < todoLists.length; i += 1) {
-      if (todoLists[i].listID === todoListId) {
-        countList = i;
-      }
-    }
-
-    for (let j = 0; j < todoLists[countList].listContent.length; j += 1) {
-      if (todoLists[countList].listContent[j].id === todoId) {
-        countItem = j;
-      }
-    }
-
-    for (let i = 0; i < todoLists.length; i += 1) {
-      if (todoLists[i].listID === todoListId) {
-        for (let j = 0; j < todoLists[i].listContent.length; j += 1) {
-          if (todoLists[i].listContent[countItem].id === todoId) {
-            todoLists[i].listContent[countItem].text = content;
-          }
-        }
-      }
-    }
+    const [countList, countItem] = this.findListandItemPosition(todoId, todoListId);
+    todoLists[countList].listContent[countItem].text = content;
     this.setState({ todoLists });
   }
 
   changeTodolistName(listname, todoListId) {
     const todoLists = cloneData(this.state.todoLists);
-    let countList = 0;
+    let countList;
     for (let i = 0; i < todoLists.length; i += 1) {
       if (todoLists[i].listID === todoListId) {
         countList = i;
       }
     }
     todoLists[countList].listName = listname;
+    this.setState({ todoLists });
+  }
+
+  toggleTodoItemCheckbox(todoId, todoListId) {
+    const todoLists = cloneData(this.state.todoLists);
+    const [countList, countItem] = this.findListandItemPosition(todoId, todoListId);
+    todoLists[countList].listContent[countItem].completed = !todoLists[countList].listContent[countItem].completed;
     this.setState({ todoLists });
   }
 
@@ -148,6 +155,7 @@ class TodoApp extends Component {
         deleteTodoList={this.deleteTodoListInApp}
         todoItemChange={this.changeTodoItem}
         todolistNameChange={this.changeTodolistName}
+        toggleTodoItemCheckbox={this.toggleTodoItemCheckbox}
       />);
 
     return (
