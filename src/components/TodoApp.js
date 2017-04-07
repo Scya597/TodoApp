@@ -128,7 +128,6 @@ class TodoApp extends Component {
   changeTodolistName(listname, todoListId) {
     const todoLists = cloneData(this.state.todoLists);
     let countList = 0;
-
     for (let i = 0; i < todoLists.length; i += 1) {
       if (todoLists[i].listID === todoListId) {
         countList = i;

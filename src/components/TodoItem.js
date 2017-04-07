@@ -22,13 +22,12 @@ class TodoItem extends Component {
   }
 
   render() {
-    const { text } = this.state;
     return (
       <div>
         <form onSubmit={this.handleChange}>
           <input
             type="text"
-            value={text}
+            value={this.state.text}
             onChange={this.onChange}
           />
         </form>

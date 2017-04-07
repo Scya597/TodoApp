@@ -5,7 +5,7 @@ import TodoItem from './TodoItem';
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: '', listname: '' };
+    this.state = { newTodotext: '', inputListname: '' };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDeleteItem = this.handleDeleteItem.bind(this);
     this.handleDeleteList = this.handleDeleteList.bind(this);
@@ -33,11 +33,11 @@ class TodoList extends Component {
 // //////
 
   onChange(e) {
-    this.setState({ text: e.target.value });
+    this.setState({ newTodotext: e.target.value });
   }
 
   onChangelistName(e) {
-    this.setState({ listname: e.target.value });
+    this.setState({ inputListname: e.target.value });
   }
 
   handleItemChange(content, todoId) {
@@ -46,14 +46,14 @@ class TodoList extends Component {
 
   handlelistNameChange(e) {
     e.preventDefault();
-    this.props.todolistNameChange(this.state.listname, this.props.list.listID);
-    this.setState({ listName: '' });
+    this.props.todolistNameChange(this.state.inputListname, this.props.list.listID);
+    this.setState({ inputListname: '' });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.newTodo(this.state.text, this.props.list.listID);
-    this.setState({ text: '' });
+    this.props.newTodo(this.state.newTodotext, this.props.list.listID);
+    this.setState({ newTodotext: '' });
   }
 
   handleDeleteItem(deleteTodoId) {
@@ -80,8 +80,8 @@ class TodoList extends Component {
         <form onSubmit={this.handlelistNameChange}>
           <input
             type="text"
+            value={this.state.inputListname}
             onChange={this.onChangelistName}
-            value={this.state.listName}
             placeholder="change your list name"
           />
         </form>
@@ -91,9 +91,9 @@ class TodoList extends Component {
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
-            placeholder="Add your item..."
-            value={this.state.text}
+            value={this.state.newTodotext}
             onChange={this.onChange}
+            placeholder="Add your item..."
           />
         </form>
         <form onSubmit={this.handleDeleteList}>
