@@ -13,40 +13,7 @@ class TodoApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todoLists: [
-        {
-          listID: 1,
-          listName: 'Initial',
-          listContent: [
-            {
-              id: 1,
-              text: 'One-1',
-              completed: true,
-            },
-            {
-              id: 2,
-              text: 'Two-1',
-              completed: false,
-            },
-          ],
-        },
-        {
-          listID: 2,
-          listName: 'Initial-Two',
-          listContent: [
-            {
-              id: 1,
-              text: 'One-2',
-              completed: false,
-            },
-            {
-              id: 2,
-              text: 'Two-2',
-              completed: false,
-            },
-          ],
-        },
-      ],
+      todoLists: [],
     };
     this.addTodoItemInList = this.addTodoItemInList.bind(this);
     this.addTodoListInApp = this.addTodoListInApp.bind(this);
