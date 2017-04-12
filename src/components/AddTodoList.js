@@ -24,7 +24,7 @@ class AddTodoList extends Component {
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
-            placeholder="Add your list..."
+            placeholder="Add TodoList"
             value={this.state.text}
             onChange={this.onChange}
           />

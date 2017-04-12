@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import TodoItem from './TodoItem';
-// import AddTodoItem from './AddTodoItem';
 
 class TodoList extends Component {
   constructor(props) {
@@ -64,17 +63,18 @@ class TodoList extends Component {
       />);
 
     return (
-      <div>
-        <h1>{this.props.list.listName}</h1>
+      <div className="todoList">
+        <h4>{this.props.list.listName}</h4>
         <form onSubmit={this.handlelistNameChange}>
           <input
             type="text"
             value={this.state.inputListname}
             onChange={this.onChangelistName}
-            placeholder="change your list name"
+            placeholder="Change List Name"
           />
         </form>
-        <div>
+        <button className="deleteList" onClick={this.handleDeleteList}>delete list</button>
+        <div className="ListContent">
           {renderTodo()}
         </div>
         <form onSubmit={this.handleSubmit}>
@@ -82,11 +82,8 @@ class TodoList extends Component {
             type="text"
             value={this.state.newTodotext}
             onChange={this.onChange}
-            placeholder="Add your item..."
+            placeholder="Add TodoItem"
           />
-        </form>
-        <form onSubmit={this.handleDeleteList}>
-          <button>delete list</button>
         </form>
       </div>
     );

@@ -30,20 +30,24 @@ class TodoItem extends Component {
 
   render() {
     return (
-      <div>
-        <div onClick={this.toggleCheckbox}>
-          <input type="checkbox" checked={this.props.todo.completed} />
-        </div>
-        <form onSubmit={this.handleChange}>
-          <input
-            type="text"
-            value={this.state.text}
-            onChange={this.onChange}
-          />
-        </form>
-        <form onSubmit={this.handleDelete}>
-          <button>delete item</button>
-        </form>
+      <div className="todoItem">
+        <input
+          type="text"
+          value={this.state.text}
+          onChange={this.onChange}
+          onSubmit={this.handleChange}
+        />
+        <input
+          type="checkbox"
+          className="checkbox"
+          checked={this.props.todo.completed}
+          onClick={this.toggleCheckbox}
+        />
+        <img
+          className="deleteItem"
+          src="/style/deleteButton.jpg"
+          onClick={this.handleDelete}
+        />
       </div>
     );
   }

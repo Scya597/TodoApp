@@ -179,9 +179,13 @@ class TodoApp extends Component {
 
     return (
       <div>
-        <h1>Completed:{isCompleted} NotCompleted:{notCompleted}</h1>
+        <div className="title">
+          <h1>Todo App</h1>
+          <h6> 物理一 詹雨安 </h6>
+          <h5>Completed:{isCompleted} NotCompleted:{notCompleted}</h5>
+          <AddTodoList newTodoList={this.addTodoListInApp} />
+        </div>
         {renderTodoLists()}
-        <AddTodoList newTodoList={this.addTodoListInApp} />
       </div>
     );
   }
