@@ -4,7 +4,8 @@
   "description": "Simple starter package for Redux with React and Babel support",
   "main": "index.js",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +24,6 @@
   },
   "dependencies": {
     "babel-preset-stage-1": "^6.1.18",
-    "bourbon": "^4.3.4",
     "node-uuid": "^1.4.8",
     "react": "^0.14.3",
     "react-dom": "^0.14.3"
